@@ -30,12 +30,12 @@ void print_path(int** dp,int si,int sj,int ei,int ej,int m,int n){
 	int option3 = OBST_COST;
 	if(si>=1)
 		option3 = dp[si-1][sj+1];
-	if(option1<option2 && option1<option3){
+	if(option1<=option2 && option1<=option3){
 		cout<<si<<" "<<sj+1<<endl;
 		Point temp(si,sj+1);
 		answer.push_back(temp);
 		print_path(dp,si,sj+1,ei,ej,m,n);
-	}else if(option2<option1 && option2<option3){
+	}else if(option2<=option1 && option2<=option3){
 		cout<<si+1<<" "<<sj+1<<endl;
 		Point temp(si+1,sj+1);
 		answer.push_back(temp);
@@ -48,7 +48,7 @@ void print_path(int** dp,int si,int sj,int ei,int ej,int m,int n){
 	}
 }
 
-int min_cost(vector< vector<int> > input, int si, int sj, int ei, int ej,int** dp,int m,int n) {
+int min_cost(vector< vector<int> > &input, int si, int sj, int ei, int ej,int** dp,int m,int n) {
 	if (si == ei && sj == ej) {
 		return input[ei][ej];
 	}
@@ -84,14 +84,7 @@ int main() {
 		}
 	}
 	int sx,sy,ex,ey;
-	cout<<"Enter Start X"<<endl;
-	cin>>sx;
-	cout<<"Enter Start Y"<<endl;
-	cin>>sy;
-	cout<<"Enter End X"<<endl;
-	cin>>ex;
-	cout<<"Enter End Y"<<endl;
-	cin>>ey;
+	cin>>sx>>sy>>ex>>ey;
 	cout << min_cost(input,sx,sy,ex,ey,dp,m,n) << endl;
 
 	// for(int i=0;i<m;i++){
