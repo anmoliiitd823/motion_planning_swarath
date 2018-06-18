@@ -1,4 +1,5 @@
 #include <iostream>
+#include <vector>
 using namespace std;
 
 const int OBST_COST = 3000;
@@ -29,7 +30,7 @@ void print_path(int** dp,int si,int sj,int ei,int ej,int m,int n){
 	}
 }
 
-int min_cost(int** input, int si, int sj, int ei, int ej,int** dp,int m,int n) {
+int min_cost(vector< vector<int> > input, int si, int sj, int ei, int ej,int** dp,int m,int n) {
 	if (si == ei && sj == ej) {
 		return input[ei][ej];
 	}
@@ -49,11 +50,12 @@ int min_cost(int** input, int si, int sj, int ei, int ej,int** dp,int m,int n) {
 int main() {
 	int m,n;
 	cin>>m>>n;
-	int ** input = new int*[m];
+	vector< vector<int> > input(m);
 	for(int i=0;i<m;i++){
-		input[i] = new int[n];
 		for(int j=0;j<n;j++){
-			cin>>input[i][j];
+			int temp;
+			cin>>temp;
+			input[i].push_back(temp);
 		}
 	}
 	int** dp = new int*[m];
@@ -83,7 +85,7 @@ int main() {
 	
 	print_path(dp,sx,sy,ex,ey,m,n);
 	for(int i=0;i<m;i++){
-		delete [] input[i];
+		delete [] dp[i];
 	}
-	delete [] input;
+	delete [] dp;
 }
