@@ -4,6 +4,18 @@ using namespace std;
 
 const int OBST_COST = 3000;
 
+class Point{
+public:
+	int x;
+	int y;
+	Point(int x,int y){
+		this->x = x;
+		this->y = y;
+	}
+};
+
+std::vector<Point> answer;
+
 void print_path(int** dp,int si,int sj,int ei,int ej,int m,int n){
 	if(si==ei && sj==ej){
 		return;
@@ -20,12 +32,18 @@ void print_path(int** dp,int si,int sj,int ei,int ej,int m,int n){
 		option3 = dp[si-1][sj+1];
 	if(option1<option2 && option1<option3){
 		cout<<si<<" "<<sj+1<<endl;
+		Point temp(si,sj+1);
+		answer.push_back(temp);
 		print_path(dp,si,sj+1,ei,ej,m,n);
 	}else if(option2<option1 && option2<option3){
 		cout<<si+1<<" "<<sj+1<<endl;
+		Point temp(si+1,sj+1);
+		answer.push_back(temp);
 		print_path(dp,si+1,sj+1,ei,ej,m,n);
 	}else{
 		cout<<si-1<<" "<<sj+1<<endl;
+		Point temp(si-1,sj+1);
+		answer.push_back(temp);
 		print_path(dp,si-1,sj+1,ei,ej,m,n);
 	}
 }
