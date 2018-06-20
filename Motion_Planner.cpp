@@ -1,102 +1,62 @@
 #include <iostream>
 #include <vector>
-using namespace std;
+#include <fstream>
+#include "Search_Based_Planners/dijkstra.h"
+#include "Search_Based_Planners/Astar.hpp"
+// #include "Search_Based_Planners/graph_construct.h"
+//using namespace std;
+#include <chrono>
+using namespace std::chrono;
 
-const int OBST_COST = 3000;
-
-class Point{
-public:
-	int x;
-	int y;
-	Point(int x,int y){
-		this->x = x;
-		this->y = y;
-	}
-};
-
-std::vector<Point> answer;
-
-void print_path(int** dp,int si,int sj,int ei,int ej,int m,int n){
-	if(si==ei && sj==ej){
-		return;
-	}
-	if(sj>=n-1){
-		return;
-	}
-	int option1 = dp[si][sj+1];
-	int option2 = OBST_COST;
-	if(si<m-1)
-		option2 = dp[si+1][sj+1];
-	int option3 = OBST_COST;
-	if(si>=1)
-		option3 = dp[si-1][sj+1];
-	if(option1<=option2 && option1<=option3){
-		cout<<si<<" "<<sj+1<<endl;
-		Point temp(si,sj+1);
-		answer.push_back(temp);
-		print_path(dp,si,sj+1,ei,ej,m,n);
-	}else if(option2<=option1 && option2<=option3){
-		cout<<si+1<<" "<<sj+1<<endl;
-		Point temp(si+1,sj+1);
-		answer.push_back(temp);
-		print_path(dp,si+1,sj+1,ei,ej,m,n);
-	}else{
-		cout<<si-1<<" "<<sj+1<<endl;
-		Point temp(si-1,sj+1);
-		answer.push_back(temp);
-		print_path(dp,si-1,sj+1,ei,ej,m,n);
-	}
-}
-
-int min_cost(vector< vector<int> > &input, int si, int sj, int ei, int ej,int** dp,int m,int n) {
-	if (si == ei && sj == ej) {
-		return input[ei][ej];
-	}
-	if (si >= m || sj >= n || si<0 || sj<0) {
-		return OBST_COST;
-	}
-	if(dp[si][sj]!=-1){
-		return dp[si][sj];
-	}
-	int option1 = min_cost(input, si , sj + 1, ei, ej, dp, m, n);
-	int option2 = min_cost(input, si + 1, sj + 1, ei, ej, dp, m, n);
-	int option3 = min_cost(input, si - 1, sj + 1, ei, ej, dp, m, n);
-	dp[si][sj] = input[si][sj] + min(option1, min(option2 , option3));
-	return dp[si][sj];
-}
+const int OBST_COST = 9;
+const int INTERVAL =10;
 
 int main() {
 	int m,n;
-	cin>>m>>n;
-	vector< vector<int> > input(m);
+	std::ifstream in("input.txt");
+	in>>m>>n;
+	std::vector< std::vector<int> > input(m);
 	for(int i=0;i<m;i++){
 		for(int j=0;j<n;j++){
 			int temp;
-			cin>>temp;
+			in>>temp;
+			if(temp==0){
+				temp = rand()%9;
+			}else{
+				temp = rand()%9;
+			}
 			input[i].push_back(temp);
 		}
 	}
-	int** dp = new int*[m];
-	for(int i=0;i<n;i++){
-		dp[i] = new int[n];
-		for(int j=0;j<n;j++){
-			dp[i][j] = -1;
-		}
-	}
-	int sx,sy,ex,ey;
-	cin>>sx>>sy>>ex>>ey;
-	cout << min_cost(input,sx,sy,ex,ey,dp,m,n) << endl;
-
-	// for(int i=0;i<m;i++){
-	// 	for(int j=0;j<n;j++){
-	// 		cout<<dp[i][j]<<" ";
-	// 	}
-	// 	cout<<endl;
-	// }
 	
-	print_path(dp,sx,sy,ex,ey,m,n);
-	for(int i=0;i<m;i++){
-		delete [] dp[i];
+	int sx,sy,ex,ey;
+	in>>sx>>sy>>ex>>ey;
+
+
+	auto start = high_resolution_clock::now();
+
+	Dijkstra Planner(input,m,n);
+	Planner.plan(sx,sy,ex,ey);
+	std::vector<std::pair<int,int> > path = Planner.get_path();
+
+	for(int i=0;i<path.size();i++){
+		input[path[i].first][path[i].second] = 5;
 	}
-	delete [] dp;
+
+	auto stop = high_resolution_clock::now();
+
+	auto duration = duration_cast<microseconds>(stop - start);
+ 
+    std::cout << "Time taken by function: "
+         << duration.count() << " microseconds" << std::endl;
+  
+	for(int i=0;i<m;i++){
+		for(int j=0;j<n;j++){
+			std::cout<<input[i][j]<<" ";
+		}
+		std::cout<<std::endl;
+	}
+
+	return 0;
+	
 }
