@@ -47,9 +47,7 @@ int main() {
 	auto stop = high_resolution_clock::now();
 
 	auto duration = duration_cast<microseconds>(stop - start);
- 
-    std::cout << "Time taken by function: "
-         << duration.count() << " microseconds" << std::endl;
+
   
 	for(int i=0;i<m;i++){
 		for(int j=0;j<n;j++){
@@ -58,6 +56,10 @@ int main() {
 		std::cout<<std::endl;
 	}
 
+
+    std::cout << "Time taken by function: "
+         << duration.count() << " microseconds" << std::endl;
+         
 	return 0;
 	
 }
