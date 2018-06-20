@@ -21,9 +21,9 @@ int main() {
 			int temp;
 			in>>temp;
 			if(temp==0){
-				temp = rand()%9;
+				temp = 2;
 			}else{
-				temp = rand()%9;
+				temp = OBST_COST;
 			}
 			input[i].push_back(temp);
 		}
@@ -32,6 +32,7 @@ int main() {
 	int sx,sy,ex,ey;
 	in>>sx>>sy>>ex>>ey;
 
+	in.close();
 
 	auto start = high_resolution_clock::now();
 

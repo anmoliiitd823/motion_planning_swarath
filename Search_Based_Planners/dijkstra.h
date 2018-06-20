@@ -60,10 +60,16 @@ public:
 				int x = (*current)[i].get_vertex()->get_x();
 				int y = (*current)[i].get_vertex()->get_y();
 				
-	            if (distance[x][y] > distance[next_x][next_y] + (*current)[i].get_vertex()->get_state_cost() + (*current)[i].get_edge_weight() + sqrt(pow(x-goalx,2)+pow(y-goaly,2)) && visited[x][y]==false)
+
+				int g = distance[next_x][next_y];
+				int h = 100000*(*current)[i].get_vertex()->get_state_cost() + (*current)[i].get_edge_weight() + sqrt(pow(x,2)+pow(y,2));
+
+				int epsilon = 5;
+
+	            if (distance[x][y] > g + epsilon*h && visited[x][y]==false)
 	            {	
 
-	                distance[x][y] = distance[next_x][next_y] + (*current)[i].get_vertex()->get_state_cost() + (*current)[i].get_edge_weight() + sqrt(pow(x-goalx,2)+pow(y-goaly,2));
+	                distance[x][y] = g + epsilon*h;
 	                (*current)[i].cumulative_cost = distance[x][y];
 
 	                pq.push((*current)[i]);
@@ -71,9 +77,9 @@ public:
 					predecessor[x][y].second = next_y;
 					visited[x][y] = true;
 
-					// std::pair<int,int> z(x,y);
+					std::pair<int,int> z(x,y);
 
-					// path.push_back(z);
+					path.push_back(z);
 	            }
 				
 			}
@@ -85,7 +91,7 @@ public:
 			next_y = x.get_vertex()->get_y();
 
 			if(next_x==goalx && next_y==goaly){
-				// break;
+				break;
 			}
 
 			visited[next_x][next_y] = true;
@@ -100,9 +106,9 @@ public:
 		while(predecessor[next_x][next_y].first != startx || predecessor[next_x][next_y].second != starty){
 
 			int x = next_x,y = next_y;
-			std::pair<int,int> z(predecessor[x][y].first,predecessor[x][y].second);
+			// std::pair<int,int> z(predecessor[x][y].first,predecessor[x][y].second);
 
-			path.push_back(z);
+			// path.push_back(z);
 
 			next_x = predecessor[x][y].first;
 			next_y = predecessor[x][y].second;
