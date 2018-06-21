@@ -21,7 +21,7 @@ public:
 class Dijkstra{
 	bool** visited;
 	std::pair<int,int>** predecessor;
-	std::priority_queue<std::pair<std::pair<int,int>,int>,std::vector<std::pair<std::pair<int,int>,int>>,mycomparison> pq;
+	std::priority_queue<std::pair<std::pair<int,int>,int>,std::vector<std::pair<std::pair<int,int>,int> >,mycomparison> pq;
 	std::vector<std::pair<int,int> > path;
 	int** distance;
 	std::vector<std::vector<int> > matrix;
@@ -143,6 +143,8 @@ public:
 
 		next_x = goalx;
 		next_y = goaly;
+
+		std::cout<<distance[next_x][next_y]<<std::endl;
 
 		while(predecessor[next_x][next_y].first != startx || predecessor[next_x][next_y].second != starty){
 

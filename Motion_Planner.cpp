@@ -19,12 +19,15 @@ int main() {
 	for(int i=0;i<m;i++){
 		for(int j=0;j<n;j++){
 			int temp;
+			// char bekar;
 			in>>temp;
+			// in>>bekar;
 			if(temp==0){
 				temp = 2;
 			}else{
 				temp = OBST_COST;
 			}
+			// std::cout<<temp;
 			input[i].push_back(temp);
 		}
 	}
@@ -37,7 +40,7 @@ int main() {
 	auto start = high_resolution_clock::now();
 
 	Dijkstra Planner(input,m,n);
-	Planner.plan(sx,sy,ex,ey);
+	Planner.plan(sx,sy,ey,ex);
 	std::vector<std::pair<int,int> > path = Planner.get_path();
 
 	for(int i=0;i<path.size();i++){
